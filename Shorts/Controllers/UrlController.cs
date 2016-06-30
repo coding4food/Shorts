@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using Shorts.Domain;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shorts.Controllers
 {
@@ -30,12 +31,36 @@ namespace Shorts.Controllers
         // GET api/values/5
         public string Get(int id)
         {
+            // 404 NotFound
+            // 200 Ok
+
             return "value";
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+        public async Task<IHttpActionResult> Post([FromBody]string value)
         {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var shortUrl = await (new UrlShorteningService(context).Shorten(value));
+
+                    return CreatedAtRoute("Get", new { id = shortUrl.Short }, "");
+                }
+                catch (ArgumentNullException)
+                {
+                    return BadRequest("Invalid URL");
+                }
+                catch (ArgumentException)
+                {
+                    return BadRequest("Invalid URL");
+                }
+            }
+            else
+            {
+                return BadRequest("Invalid URL");
+            }
         }
     }
 }

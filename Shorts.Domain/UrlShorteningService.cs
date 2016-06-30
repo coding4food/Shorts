@@ -15,7 +15,7 @@ namespace Shorts.Domain
             this.context = context;
         }
 
-        public async Task Shorten(string url)
+        public async Task<ShortUrl> Shorten(string url)
         {
             Uri link;
 
@@ -41,6 +41,8 @@ namespace Shorts.Domain
             shortUrl.Short = Encoder.Encode(shortUrl.ShortUrlId);
 
             await context.SaveChangesAsync();
+
+            return shortUrl;
         }
     }
 }

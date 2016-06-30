@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http;
+using System.Web.Http.Results;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -12,6 +13,7 @@ using Shorts;
 using Shorts.Controllers;
 using Shorts.Domain;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace Shorts.Tests.Controllers
 {
@@ -64,12 +66,33 @@ namespace Shorts.Tests.Controllers
         }
 
         [TestMethod]
-        public void Post()
+        public async Task Post_Returns_BadRequest_For_Invalid_Url()
         {
             // Act
-            controller.Post("value");
+            var result = await controller.Post("value");
 
             // Assert
+            result.Should().BeOfType<BadRequestErrorMessageResult>();
+        }
+
+        [TestMethod]
+        public async Task Post_Returns_BadRequest_For_Empty_Url()
+        {
+            // Act
+            var result = await controller.Post("");
+
+            // Assert
+            result.Should().BeOfType<BadRequestErrorMessageResult>();
+        }
+
+        [TestMethod]
+        public async Task Post_Returns_Created_For_Valid_Url()
+        {
+            // Act
+            var result = await controller.Post("http://google.com");
+
+            // Assert
+            result.Should().BeOfType<CreatedAtRouteNegotiatedContentResult<string>>();
         }
     }
 }
