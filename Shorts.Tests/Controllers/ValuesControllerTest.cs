@@ -56,13 +56,61 @@ namespace Shorts.Tests.Controllers
         }
 
         [TestMethod]
-        public void GetById()
+        public async Task GetById_Returns_BadRequest_For_Invalid_Id()
         {
             // Act
-            string result = controller.Get(5);
+            var result = await controller.Get("50-0");
 
             // Assert
-            Assert.AreEqual("value", result);
+            result.Should().BeOfType<BadRequestResult>();
+        }
+
+        [TestMethod]
+        public async Task GetById_Returns_NotFound_For_Nonexisting_Id()
+        {
+            // Act
+            var result = await controller.Get("AbCd5");
+
+            // Assert
+            result.Should().BeOfType<NotFoundResult>();
+        }
+
+        [TestMethod]
+        public async Task GetById_Returns_Redirect_For_Existing_Id()
+        {
+            var url = "http://google.com";
+            var shortId = "AbCd5";
+            var shortUrl = new ShortUrl(url) { ShortUrlId = 100, Short = "AbCd5" };
+
+            Mock.Get(context.ShortUrl).Setup(_ => _.Find(It.IsAny<long>())).Returns(shortUrl);
+
+            // Act
+            var result = await controller.Get(shortId);
+
+            // Assert
+            result.Should().BeOfType<RedirectResult>();
+            result.As<RedirectResult>().Location.Should().Be(new Uri(url));
+        }
+
+        [TestMethod]
+        public async Task GetById_Increments_Click_Count_For_Existing_Id()
+        {
+            var url = "http://google.com";
+            var shortId = "AbCd5";
+            var shortUrl = new ShortUrl(url) { ShortUrlId = 100, Short = "AbCd5" };
+            var clickCount = shortUrl.Clicks;
+
+            Mock.Get(context.ShortUrl).Setup(_ => _.Find(It.IsAny<long>())).Returns(shortUrl);
+
+            // Act
+            var result = await controller.Get(shortId);
+
+            // Assert
+            result.Should().BeOfType<RedirectResult>();
+            result.As<RedirectResult>().Location.Should().Be(new Uri(url));
+            shortUrl.Clicks.Should().Be(clickCount + 1);
+
+            Mock.Get(context).Verify(_ => _.SaveChangesAsync(), Times.Once());
         }
 
         [TestMethod]

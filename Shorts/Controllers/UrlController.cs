@@ -29,12 +29,40 @@ namespace Shorts.Controllers
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public async Task<IHttpActionResult> Get(string id)
         {
-            // 404 NotFound
-            // 200 Ok
+            if (ModelState.IsValid)
+            {
+                //Validate by regex
 
-            return "value";
+                try
+                {
+                    // Transactional
+                    var shortUrl = new UrlShorteningService(context).GetUrl(id);
+
+                    if (shortUrl == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        context.ShortUrl.Attach(shortUrl);
+                        shortUrl.Clicks++;
+
+                        await context.SaveChangesAsync();
+
+                        return Redirect(shortUrl.Url);
+                    }
+                }
+                catch (ArgumentException)
+                {
+                    return BadRequest();
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         // POST api/values

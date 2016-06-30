@@ -44,5 +44,12 @@ namespace Shorts.Domain
 
             return shortUrl;
         }
+
+        public ShortUrl GetUrl(string shortId)
+        {
+            var id = Encoder.Decode(shortId);
+
+            return context.ShortUrl.Find(id);
+        }
     }
 }
