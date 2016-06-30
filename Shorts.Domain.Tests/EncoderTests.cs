@@ -1,4 +1,5 @@
 ﻿using System;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shorts.Domain;
 
@@ -21,6 +22,16 @@ namespace Shorts.Domain.Tests
             var value = "D4DcvE56tE";
 
             Assert.AreEqual(value, Encoder.Encode(Encoder.Decode(value)));
+        }
+
+        [TestMethod]
+        public void Decode_Throws_For_Invalid_Input()
+        {
+            var value = "D4Dcv-E56tE";
+
+            Action act = () => Encoder.Decode(value);
+
+            act.ShouldThrow<ArgumentException>().Where(_ => _.Message.Contains("Invalid input"));
         }
     }
 }

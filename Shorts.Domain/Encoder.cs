@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Shorts.Domain
@@ -9,6 +10,8 @@ namespace Shorts.Domain
     public static class Encoder
     {
         private static readonly string symbols;
+
+        private static readonly Regex decodeValidator = new Regex("^[0-9A-Za-z]+$", RegexOptions.Compiled);
 
         static Encoder()
         {
@@ -33,6 +36,11 @@ namespace Shorts.Domain
 
         public static long Decode(string value)
         {
+            if (!decodeValidator.IsMatch(value))
+            {
+                throw new ArgumentException("Invalid input");
+            }
+
             long result = 0;
 
             foreach (var n in value.Select(c => symbols.IndexOf(c)))
