@@ -16,6 +16,8 @@ namespace Shorts.Controllers
         // Should be injected
         private ShortsContext context = new ShortsContext();
 
+        public UrlController() { }
+
         public UrlController(ShortsContext context)
         {
             this.context = context;
