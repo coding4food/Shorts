@@ -15,4 +15,15 @@
                     function (response) { console.error("Posting URL failed"); }
                 );
         };
+
+        this.getAllUrls = function () {
+            $http.get("/api/url/")
+                .then(function (response) {
+                    console.dir(response.data);
+                    $scope.shortUrls = response.data;
+                },
+                function (response) { console.error("Getting all URLs failed"); })
+        };
+
+        this.getAllUrls();
     }]);
