@@ -18,7 +18,7 @@ using System.Threading;
 namespace Shorts.Tests.Controllers
 {
     [TestClass]
-    public class ValuesControllerTest
+    public class UrlControllerTest
     {
         private ShortsContext context;
         private UrlController controller;
