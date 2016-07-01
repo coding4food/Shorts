@@ -30,6 +30,18 @@ namespace Shorts.Tests.Controllers
             context = Mock.Of<ShortsContext>(_ => _.ShortUrl == shortUrls);
 
             controller = new UrlController(context);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "http://example.com/api/url");
+            controller.Request = request;
+
+            System.Web.Http.Routing.UrlHelper urlHelper = new System.Web.Http.Routing.UrlHelper(request);
+            controller.Url = urlHelper;
+
+            controller.Configuration = new HttpConfiguration();
+            controller.Configuration.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional });
         }
 
         [TestMethod]
@@ -136,19 +148,6 @@ namespace Shorts.Tests.Controllers
         [TestMethod]
         public async Task Post_Returns_Created_For_Valid_Url()
         {
-            // Arrange
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://example.com/api/url");
-            controller.Request = request;
-
-            System.Web.Http.Routing.UrlHelper urlHelper = new System.Web.Http.Routing.UrlHelper(request);
-            controller.Url = urlHelper;
-
-            controller.Configuration = new HttpConfiguration();
-            controller.Configuration.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional });
-
             // Act
             var result = await controller.Post("http://google.com");
 
