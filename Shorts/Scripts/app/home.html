@@ -1,8 +1,8 @@
 ﻿<div><a href="{{shortened}}" target="_blank">{{shortened}}</a></div>
 <div class="">
     <form name="shortForm">
-        <input type="url" name="url" ng-model="url" required />
-        <button type="button" class="btn" ng-disabled="shortForm.$invalid" ng-click="shortener.shortenUrl()">Shorten!</button>
+        <input type="url" name="url" ng-model="url.location" required />
+        <button type="button" class="btn" ng-disabled="shortForm.$invalid" ng-click="shortenUrl()">Shorten!</button>
         <a ng-href="#list">View all links</a>
     </form>
 </div>
