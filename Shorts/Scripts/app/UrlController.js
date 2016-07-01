@@ -1,4 +1,18 @@
-﻿angular.module("shorts", [])
+﻿angular.module("shorts", ['ngRoute'])
+    .config(['$locationProvider', '$routeProvider',
+        function config($locationProvider, $routeProvider) {
+            //$locationProvider.hashPrefix('!');
+
+            $routeProvider.
+              when('/', {
+                  templateUrl: 'Scripts/app/home.html'
+              }).
+              when('/list', {
+                  templateUrl: 'Scripts/app/link-list.html'
+              }).
+              otherwise('/');
+        }
+    ])
     .controller("UrlController", ["$scope", "$http", function ($scope, $http) {
         $scope.shortUrls = [
             { ShortUrlId: 1, Url: "http://google.com", Short: "/ERT123", Created: new Date(new Date().setHours(1)), Clicks: 0 },

@@ -1,0 +1,18 @@
+﻿<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Created</td>
+                <td>URL</td>
+                <td>Short URL</td>
+                <td>Click count</td>
+            </tr>
+        </thead>
+        <tr ng-repeat="shortUrl in shortUrls | orderBy: '-Created'">
+            <td>{{shortUrl.Created | date:'short'}}</td>
+            <td><a href="{{shortUrl.Url}}" target="_blank">{{shortUrl.Url}}</a></td>
+            <td><a href="{{shortUrl.Short}}" target="_blank">{{shortUrl.Short}}</a></td>
+            <td>{{shortUrl.Clicks}}</td>
+        </tr>
+    </table>
+</div>
