@@ -68,7 +68,8 @@ namespace Shorts.Controllers
         }
 
         // POST api/values
-        [Route(@"api/url/{value:regex(^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?$)}")]
+        //[Route(@"api/url/{value:regex(^(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?$)}")]
+        //[HttpPost]
         public async Task<IHttpActionResult> Post([FromBody]string value)
         {
             if (ModelState.IsValid)
@@ -77,7 +78,9 @@ namespace Shorts.Controllers
                 {
                     var shortUrl = await (new UrlShorteningService(context).Shorten(value));
 
-                    return CreatedAtRoute("Get", new { id = shortUrl.Short }, "");
+                    var routeValues = new { controller = "url", id = shortUrl.Short };
+
+                    return CreatedAtRoute("DefaultApi", routeValues, Url.Link("DefaultApi", routeValues));
                 }
                 catch (ArgumentNullException)
                 {
