@@ -13,6 +13,7 @@ namespace Shorts.Domain
         public string Url { get; set; }
         public string Short { get; set; }
         public int Clicks { get; set; } = 0;
+        public DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow;
 
         private ShortUrl() { }
 
