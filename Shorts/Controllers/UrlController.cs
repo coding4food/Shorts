@@ -27,7 +27,15 @@ namespace Shorts.Controllers
         public IEnumerable<ShortUrl> Get()
         {
             // using async makes mocking EF hard
-            return context.ShortUrl.ToArray();
+            var data = context.ShortUrl.ToArray();
+
+            foreach (var shortUrl in data)
+            {
+                // HACK proper view model needed
+                shortUrl.Short = Url.Link("DefaultApi", new { controller = "url", id = shortUrl.Short });
+            }
+
+            return data;
         }
 
         // GET api/values/5

@@ -21,7 +21,7 @@
         <tr ng-repeat="shortUrl in shortUrls | orderBy: '-Created'">
             <td>{{shortUrl.Created | date:'short'}}</td>
             <td><a href="{{shortUrl.Url}}" target="_blank">{{shortUrl.Url}}</a></td>
-            <td><a href="@Url.HttpRouteUrl("DefaultApi", new { controller = "url" }){{shortUrl.Short}}" target="_blank">@Url.HttpRouteUrl("DefaultApi", new { controller = "Url" }){{shortUrl.Short}}</a></td>
+            <td><a href="{{shortUrl.Short}}" target="_blank">{{shortUrl.Short}}</a></td>
             <td>{{shortUrl.Clicks}}</td>
         </tr>
     </table>
