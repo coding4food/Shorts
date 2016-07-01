@@ -1,9 +1,9 @@
-﻿<div><a href="{{shortened}}" target="_blank">{{shortened}}</a></div>
+﻿<h3><a href="{{shortened}}" target="_blank">{{shortened}}</a></h3>
 <div class="">
-    <form name="shortForm">
-        <input type="url" name="url" ng-model="url.location" required />
-        <button type="button" class="btn" ng-disabled="shortForm.$invalid" ng-click="shortenUrl()">Shorten!</button>
-        <a ng-href="#list">View all links</a>
+    <form name="shortForm" class="form-inline">
+        <input type="url" name="url" ng-model="url.location" required class="form-control input-lg" />
+        <button type="button" class="btn btn-lg" ng-disabled="shortForm.$invalid" ng-click="shortenUrl()">Shorten!</button>
+        <a ng-href="#list" role="button" class="btn btn-default btn-lg">View all links</a>
     </form>
 </div>
 <div role="alert">

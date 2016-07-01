@@ -1,13 +1,13 @@
 ﻿<div>
-    <a ng-href="#/">Back</a>
+    <a ng-href="#/" role="button" class="btn btn-default btn-lg">Back</a>
     <br />
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr>
-                <td>Created</td>
-                <td>URL</td>
-                <td>Short URL</td>
-                <td>Click count</td>
+                <td><b>Created</b></td>
+                <td><b>URL</b></td>
+                <td><b>Short URL</b></td>
+                <td><b>Click count</b></td>
             </tr>
         </thead>
         <tr ng-repeat="shortUrl in shortUrls | orderBy: '-Created'">
